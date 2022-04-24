@@ -1,0 +1,201 @@
+{
+    "type": "bubble",
+    "size": "kilo",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "BY TEXTRANK",
+              "color": "#ffffff66",
+              "size": "sm"
+            },
+            {
+              "type": "text",
+              "text": "SUMMARY 摘要",
+              "color": "#ffffff",
+              "size": "xl",
+              "flex": 4,
+              "weight": "bold"
+            }
+          ]
+        }
+      ],
+      "paddingAll": "20px",
+      "backgroundColor": "#2471A3",
+      "spacing": "md",
+      "height": "80px",
+      "paddingTop": "22px"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "filler"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [],
+                  "cornerRadius": "30px",
+                  "height": "12px",
+                  "width": "12px",
+                  "borderColor": "#2471A3",
+                  "borderWidth": "2px"
+                },
+                {
+                  "type": "filler"
+                }
+              ],
+              "flex": 0
+            },
+            {
+              "type": "text",
+              "text": "Akihabarajojhiguyfuyfkytvkuyvikuyg7uvr87rf7uik",
+              "gravity": "center",
+              "flex": 4,
+              "size": "md",
+              "wrap": true
+            }
+          ],
+          "spacing": "lg",
+          "cornerRadius": "30px",
+          "margin": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "filler"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [],
+                  "cornerRadius": "30px",
+                  "height": "12px",
+                  "width": "12px",
+                  "borderColor": "#2471A3",
+                  "borderWidth": "2px"
+                },
+                {
+                  "type": "filler"
+                }
+              ],
+              "flex": 0
+            },
+            {
+              "type": "text",
+              "text": "Akihabara",
+              "gravity": "center",
+              "flex": 4,
+              "size": "md",
+              "wrap": true
+            }
+          ],
+          "spacing": "lg",
+          "cornerRadius": "30px",
+          "margin": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "filler"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [],
+                  "cornerRadius": "30px",
+                  "height": "12px",
+                  "width": "12px",
+                  "borderColor": "#2471A3",
+                  "borderWidth": "2px"
+                },
+                {
+                  "type": "filler"
+                }
+              ],
+              "flex": 0
+            },
+            {
+              "type": "text",
+              "text": "Akihabara",
+              "gravity": "center",
+              "flex": 4,
+              "size": "md",
+              "wrap": true
+            }
+          ],
+          "spacing": "lg",
+          "cornerRadius": "30px",
+          "margin": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "filler"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [],
+                  "cornerRadius": "30px",
+                  "height": "12px",
+                  "width": "12px",
+                  "borderColor": "#2471A3",
+                  "borderWidth": "2px"
+                },
+                {
+                  "type": "filler"
+                }
+              ],
+              "flex": 0
+            },
+            {
+              "type": "text",
+              "text": "Akihabara",
+              "gravity": "center",
+              "flex": 4,
+              "size": "md",
+              "wrap": true
+            }
+          ],
+          "spacing": "lg",
+          "cornerRadius": "30px",
+          "margin": "xl"
+        }
+      ]
+    }
+  }
