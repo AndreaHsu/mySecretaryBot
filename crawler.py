@@ -36,7 +36,7 @@ def crawl(url):
         print(category)
     """
     if(news.text == None):
-        text = news.title
+        text = None
     else:
         text = news.text
     # print(news.html)      # 网页源代码

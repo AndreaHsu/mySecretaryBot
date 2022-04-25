@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pyimgur
 import re
 
-CLIENT_ID = "f99ebeae7639c1a"
+from key import CLIENT_ID
 
 def wordcloud(title,text,imgID):
     fontPath = r'C:\Users\user\Downloads\NotoSansCJKtc-hinted\NotoSansCJKtc-Regular.otf'
@@ -20,7 +20,6 @@ def wordcloud(title,text,imgID):
         stoplist[i] = re.sub('\n',"",stoplist[i])
 
     # stopwords = {}.fromkeys(stoplist)
-    # print("+++++++++++++++++++",stoplist)
 
     content = "" + title + text
 
@@ -31,9 +30,9 @@ def wordcloud(title,text,imgID):
 
     my_wordcloud = WordCloud(font_path =fontPath, stopwords=stoplist,background_color='white',max_words=200).generate(words)
 
-    plt.imshow(my_wordcloud)
-    plt.axis("off")
-    picture = plt.show()
+    # plt.imshow(my_wordcloud)
+    # plt.axis("off")
+    # picture = plt.show()
 
     my_wordcloud.to_file('.\\img\\'+str(imgID)+'.jpg')
     return save_img(imgID)

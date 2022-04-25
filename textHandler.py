@@ -1,4 +1,5 @@
 import re
+import json
 from linebot import ( 
     LineBotApi, WebhookHandler
 )
@@ -41,23 +42,29 @@ def handleText(message, replyToken, source):
             
     elif(re.search("http",message.text) != None):
         url = urlfind(message.text)[0]
-        print(url)
+        # print(url)
+        title =""
+        text = ""
+        keywords = []
+        image =""
+        wordcloud_link =""
         # check if we can crawl the url
         try:
             title,text,keywords,image = crawl(url)
-            if(title,text,keywords,image == []):
+            # print(text)
+            if(text == ""):
                 text_message = TextSendMessage(text='小秘書目前無法爬取該文章$',emojis = [{
-            "index": 12,
-            "productId": "5ac1bfd5040ab15980c9b435",
-            "emojiId": "024"
-        }])
+                    "index": 12,
+                    "productId": "5ac1bfd5040ab15980c9b435",
+                    "emojiId": "024"
+                }])
                 return text_message
         except:
             text_message = TextSendMessage(text='小秘書目前無法爬取該文章$',emojis = [{
-            "index": 12,
-            "productId": "5ac1bfd5040ab15980c9b435",
-            "emojiId": "024"
-        }])
+                    "index": 12,
+                    "productId": "5ac1bfd5040ab15980c9b435",
+                    "emojiId": "024"
+                }])
             return text_message
 
         # 先看資料庫裡有沒有該文章
@@ -70,17 +77,7 @@ def handleText(message, replyToken, source):
             result = cursor.fetchone()
             print(result)
             
-            title =""
-            keywords = ""
-            image =""
-            wordcloud_link =""
-            
             ID = result[0]
-            title = title+result[1]
-            keywords = keywords+result[3]
-            keywords = keywords.split(',')
-            print(keywords)
-            image = image+result[7]
             wordcloud_link = wordcloud_link +result[8]
                 
             print(ID,title,keywords,wordcloud_link,image)
@@ -99,7 +96,7 @@ def handleText(message, replyToken, source):
             
             #寫入資料庫
             sql = "INSERT INTO articles (title,url,keywords,top_img) VALUES (%s,%s,%s,%s)"
-            print (sql)
+            # print (sql)
             try:
                 # Execute the SQL command
                 cursor.execute(sql,(title,url,keywords_list,image))
@@ -118,7 +115,7 @@ def handleText(message, replyToken, source):
             wordcloud_link = wordcloud(title,text,imgID)
 
             sql = "UPDATE articles SET wordcloud_link=\'"+ wordcloud_link +" \'WHERE id =\'"+ str(imgID) +"\';"
-            print (sql)
+            # print (sql)
             try:
                 # Execute the SQL command
                 cursor.execute(sql)
@@ -132,16 +129,23 @@ def handleText(message, replyToken, source):
         userID = source.user_id
 
         sql = "SELECT * FROM users WHERE userLineID = \'" + userID + "\';"
-        print (sql)
+        # print (sql)
         try:
             # Execute the SQL command
             cursor.execute(sql)
             # 取得所有資料
             result = cursor.fetchone()
             print(result)
+            if(result == None):
+                text_message = TextSendMessage(text='請先填寫基本資料!\n讓小秘書先行了解你$',emojis = [{
+                        "index": 19,
+                        "productId": "5ac1bfd5040ab15980c9b435",
+                        "emojiId": "003"
+                    }])
+                return text_message
         except:
-            print("fail to fetch id")
-            
+            print("Error: unable to fetch data")
+        
         ID = result[0]
         choice = {}
         choice["hobby"] = result[2]
@@ -170,26 +174,26 @@ def handleText(message, replyToken, source):
         """
         fact_score = "average"
         commend = "目前無可疑"
-        print("oh my god")
         
         #回傳訊息
         text_message = []
         
         try:
-#             contents = build_pointer(like,point)
             contents = json.load(open('flex.json','r',encoding='utf-8'))
-            print(contents["contents"][0]["header"]["contents"][2])
+            # print(contents["contents"][0]["header"]["contents"][2])
             item = contents["contents"][0]["header"]["contents"][2]["contents"][0]["width"]
-            print(item)
+            # print(item)
             #更改個人喜好
-            contents["contents"][0]["header"]["contents"][1]["text"] = str(int(point/0.8*100))+"%"
+            star = point/0.8*100
+            if(star > 1): star = 100
+            contents["contents"][0]["header"]["contents"][1]["text"] = str(int(star))+"%"
             contents["contents"][0]["body"]["contents"][0]["contents"][0]["text"] = like
-            contents["contents"][0]["header"]["contents"][2]["contents"][0]["width"] = str(int(point/0.8*100))+"%"
+            contents["contents"][0]["header"]["contents"][2]["contents"][0]["width"] = str(int(star))+"%"
             #更改可信賴度
             contents["contents"][1]["header"]["contents"][1]["text"] = str(fact_score)+"%"
             contents["contents"][1]["body"]["contents"][0]["contents"][0]["text"] = commend
             if(fact_score == 'average'):
-                contents["contents"][1]["header"]["contents"][2]["contents"][0]["width"] = str("average")+"%"
+                contents["contents"][1]["header"]["contents"][2]["contents"][0]["width"] = str(80)+"%"
             else:
                 contents["contents"][1]["header"]["contents"][2]["contents"][0]["width"] = str(fact_score)+"%"
             #更改聲量
@@ -197,10 +201,10 @@ def handleText(message, replyToken, source):
             contents["contents"][2]["body"]["contents"][0]["contents"][0]["text"] = volume
             contents["contents"][2]["header"]["contents"][2]["contents"][0]["width"] = str(score)+"%"
             
-            print("happy~~~~~~~~~~~~~~~~\n")
+            print("success flex message change")
             text_message.append(FlexSendMessage(alt_text='flex',contents=contents))
         except:
-            print("errorQAQQAQ")
+            print("Error: flex message change")
         
         # if(response!= ""):
             # text_message.append(TextSendMessage(text = response))
@@ -242,12 +246,20 @@ def handleText(message, replyToken, source):
     elif(message.text == '推薦文章'):
         userID = source.user_id
         sql = "SELECT hobby FROM users WHERE userLineID = \'" + userID + "\';"
-        print (sql)
+        # print (sql)
         try:
            # Execute the SQL command
             cursor.execute(sql)
             # 取得所有資料
             result = cursor.fetchone()
+            if(result == None):
+                text_message = TextSendMessage(text='請先填寫基本資料!\n讓小秘書先行了解你$',emojis = [{
+                        "index": 19,
+                        "productId": "5ac1bfd5040ab15980c9b435",
+                        "emojiId": "003"
+                    }])
+                return text_message
+
             hobby = result[0].split("，")
             print(hobby)
             print("hobby select finish")
@@ -269,7 +281,6 @@ def handleText(message, replyToken, source):
         print("craw finish")
 
         text_message.append(TextSendMessage(text='為你推薦以下文章!!'))
-        print("ohhhhhhh nooooooooooooooooooooooo")
         text_message.append(TemplateSendMessage(
              alt_text='Dcard articles',
              template=CarouselTemplate(columns=[
@@ -340,17 +351,28 @@ def handleText(message, replyToken, source):
                          ]
                      )
              ]))) 
-        
-        #quickreply
-#         text_message = TextSendMessage(text='想看甚麼內容?也可以手動輸入想點閱的主題喔!',
-#                                 quick_reply=QuickReply(items=[
-#                                     QuickReplyButton(action=MessageAction(label=hobby[0], text=hobby[0])),
-#                                     QuickReplyButton(action=MessageAction(label=hobby[1], text=hobby[1])),
-#                                     QuickReplyButton(action=MessageAction(label="自動依據個人喜好推薦", text="自動依據個人喜好推薦")),
-#                                 ]))
     
     elif(message.text == '收錄文章'):
         userID = source.user_id
+        # check the person has registered
+        sql = "SELECT * FROM users WHERE userLineID = \'" + userID + "\';"
+        # print (sql)
+        try:
+            # Execute the SQL command
+            cursor.execute(sql)
+            # 取得所有資料
+            result = cursor.fetchone()
+            print(result)
+            if(result == None):
+                text_message = TextSendMessage(text='請先填寫基本資料!\n讓小秘書先行了解你$',emojis = [{
+                        "index": 19,
+                        "productId": "5ac1bfd5040ab15980c9b435",
+                        "emojiId": "003"
+                    }])
+                return text_message
+        except:
+            print("Error: unable to fetch data")
+        # start asking bookmark
         try:
             sql = "UPDATE users SET server = 1 Where userLineID = \'"+ userID+ "\';"
             print(sql)
@@ -358,7 +380,7 @@ def handleText(message, replyToken, source):
             db.commit()
         except:
             print("wrong")
-        
+
         user_describe[userID] = ""
         text_message = TextSendMessage(text='請描述你想找的收錄文章~句子或是詞語都可以喔~')
     else:
@@ -457,7 +479,6 @@ def handleText(message, replyToken, source):
                 print(user_describe[userID])
                 text_message = TextSendMessage(text='好的!還有甚麼要補充描述的嗎?沒有的話請輸入"沒有"喔~')
         else:
-            print("ooooo")
             text_message = []
             text_message.append(TextSendMessage(text='感謝您的訊息~'))
             text_message.append(TextSendMessage(text='小秘書還在學習如何處理相關訊息!'))

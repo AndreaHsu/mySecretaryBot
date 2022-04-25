@@ -1,10 +1,7 @@
 # import db
 import pymysql
+from key import database
 
-db = pymysql.connect(
-        host = 'localhost',
-        user = 'root',
-        password = '12345678',
-        database = 'secretary')
+db = database
 
 cursor = db.cursor()

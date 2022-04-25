@@ -23,12 +23,9 @@ def SearchBookmarkLDA(msgg,userID):
         print("Used files generated from first tutorial")
     else:
         print("Please run first tutorial to generate data set")
-    print("ppppppp")
-    temp = preprocess(msgg)
-    print("ppppppp")
-    bow_vector = dictionary.doc2bow(temp)
-    print("ppppppp")
 
+    temp = preprocess(msgg)
+    bow_vector = dictionary.doc2bow(temp)
     vec_lda = lda_model[bow_vector]
     
     print('判斷文章:\n'+msgg+"\n")
@@ -42,15 +39,15 @@ def SearchBookmarkLDA(msgg,userID):
     print("********************************\n")
 
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
-    for i in range(len(sims[:5])):
-        print(sims[:5][i])
-        print(sims[:5][0][0])
-    print(sims[:5])
-    print(sims[:5][1][1])
+    for i in range(len(sims[:10])):
+        print(sims[:10][i])
+        print(sims[:10][0][0])
+    print(sims[:10])
+    print(sims[:10][1][1])
     
     context_ID=[]
-    for i in range(5):
-        context_ID.append(int(sims[:5][i][0]))
+    for i in range(10):
+        context_ID.append(int(sims[:10][i][0]))
 
     title_list = []
     url_list = []
@@ -66,13 +63,15 @@ def SearchBookmarkLDA(msgg,userID):
       # 迴圈輸出 指定欄位
         
         for i in context_ID:
-            title_list.append(rows[i]['title'])
-            url_list.append(rows[i]['href'])
+            if(rows[i]['title'] != 'title'): 
+                title_list.append(rows[i]['title'])
+            if(rows[i]['href'] != 'href'): 
+                url_list.append(rows[i]['href'])
             
     response = ""
     response = '小秘書提供以下書籤文章，給您參考:'+"\n" + '===============' + "\n"
-    for i in range(len(context_ID)):
-        if i != len(context_ID)-1:
+    for i in range(len(title_list)):
+        if i != len(title_list)-1:
             response = response + str(i+1) + '.' + title_list[i] + '\n' + url_list[i] + '\n' + '===============' + '\n'
         else:
             response = response + str(i+1) + '.' + title_list[i] + "\n" + url_list[i]

@@ -2,6 +2,7 @@
 from flask import Flask,request
 import requests
 import json
+import csv
 from linebot import ( 
     LineBotApi, WebhookHandler
 )   
@@ -24,11 +25,12 @@ from userLDA import build_personal_LDA
 from crawler import crawl_only_text,crawl
 from textRank import ExtractableAutomaticSummary
 from otherHandler import handleImage,handleVideo,handleAudio,handleLocation,handleSticker
+from key import linebotApi,webhookHandler
 
 # initialize the flask app  
 app = Flask(__name__)  
-line_bot_api = LineBotApi('FvlbeH5f+VxKUp1dynBvCfOUoSqmi0XY1czJc4HUXS0Ix7Fq9rez34Qjf/fbdVRp+RLaThVU4VPELi0sdFqMn4S4mDSyykX4MkxiP8LXfOzoiF6zufbidjWH0t1v4N73kQKX61RaVbnOh6Riztj7CwdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('5cae98277053b274cce717b6e39b3335')
+line_bot_api = linebotApi
+handler = webhookHandler
 
 @app.route("/callback", methods=['POST'])
 def callback():

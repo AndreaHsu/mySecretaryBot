@@ -46,7 +46,7 @@ def personal_like(userID,text):
     like = ""
 
     sql = "SELECT id FROM users WHERE userLineID = \'" + userID + "\';"
-    print (sql)
+    # print (sql)
     try:
         # Execute the SQL command
         cursor.execute(sql)
@@ -54,7 +54,7 @@ def personal_like(userID,text):
         result = cursor.fetchone()
         print(result)
     except:
-        print("fail to fetch id")
+        print("Error: Unable to fetch the data")
             
     ID = result[0]
     Path = "./LDA/"+str(ID)+"/"

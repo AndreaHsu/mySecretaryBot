@@ -2,16 +2,12 @@ from pytrends.request import TrendReq
 
 def internet_volume(keywords):
     #get top keywords on the Net
-    print("ohhhhh")
     pytrend = TrendReq(hl='en-US', tz=360)
-    print("ohhhhh")
     df = pytrend.trending_searches(pn='taiwan')
-    print("ohhhhh")
     top = df.head()
 
     keywords.append(top.values[0][0])
     keywords.append(top.values[1][0])
-    print(keywords)
     
     pytrend.build_payload(
          kw_list=keywords,
