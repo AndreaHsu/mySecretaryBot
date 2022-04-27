@@ -1,4 +1,4 @@
-# Mysecretary
+# InfoWaiter (Mysecretary)
 An autoreading line bot 個人化的訊息過濾小幫手
 - 過濾出有用、正確、與您有興趣的文章
 - 享受有品質的資訊
