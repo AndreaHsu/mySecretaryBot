@@ -38,7 +38,7 @@ def handleText(message, replyToken, source):
         elif(message.text == '設定--修改'):
             text_message = TextSendMessage(text='OK')
     elif(message.text == 'Finish setting'):
-         text_message=TextSendMessage(text='完成個人設定')
+         text_message=TextSendMessage(text='完成個人設定(請稍待2~5分鐘進行個人化初始設置)')
             
     elif(re.search("http",message.text) != None):
         url = urlfind(message.text)[0]
@@ -185,7 +185,7 @@ def handleText(message, replyToken, source):
             # print(item)
             #更改個人喜好
             star = point/0.8*100
-            if(star > 1): star = 100
+            if(star > 100): star = 100
             contents["contents"][0]["header"]["contents"][1]["text"] = str(int(star))+"%"
             contents["contents"][0]["body"]["contents"][0]["contents"][0]["text"] = like
             contents["contents"][0]["header"]["contents"][2]["contents"][0]["width"] = str(int(star))+"%"
@@ -409,7 +409,13 @@ def handleText(message, replyToken, source):
                     print("fail to fetch id")
             
                 ID = result[0]
-                response,bookmark_title,bookmark_url = SearchBookmarkLDA(user_describe[userID],str(ID))
+                # ID = 30
+                try:    
+                    response,bookmark_title,bookmark_url = SearchBookmarkLDA(user_describe[userID],str(ID))
+                except:
+                    print("gg")
+                    text_message = TextSendMessage(text='小秘書還在改善，目前找不到QQ')
+                    return text_message
                 print(response)
 #                 text_message.append(TextSendMessage(response))
                 text_message.append(TemplateSendMessage(

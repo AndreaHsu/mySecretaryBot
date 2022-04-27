@@ -25,29 +25,33 @@ def SearchBookmarkLDA(msgg,userID):
         print("Please run first tutorial to generate data set")
 
     temp = preprocess(msgg)
+    print(temp)
+    if(temp == []):
+        temp = [msgg]
+    print(temp)
     bow_vector = dictionary.doc2bow(temp)
     vec_lda = lda_model[bow_vector]
     
     print('判斷文章:\n'+msgg+"\n")
-
+    print(lda_model[bow_corpus])
     # 建立索引
     index = similarities.MatrixSimilarity(lda_model[bow_corpus]) 
-
+    print(index)
     # 計算相似度（前五名）
     # sims = index[vec_lda_tfidf]
     sims = index[vec_lda]
     print("********************************\n")
 
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
-    for i in range(len(sims[:10])):
-        print(sims[:10][i])
-        print(sims[:10][0][0])
-    print(sims[:10])
-    print(sims[:10][1][1])
+    for i in range(len(sims[:8])):
+        print(sims[:8][i])
+        print(sims[:8][0][0])
+    print(sims[:8])
+    print(sims[:8][1][1])
     
     context_ID=[]
-    for i in range(10):
-        context_ID.append(int(sims[:10][i][0]))
+    for i in range(8):
+        context_ID.append(int(sims[:8][i][0]))
 
     title_list = []
     url_list = []

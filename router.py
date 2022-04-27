@@ -54,10 +54,10 @@ def callback():
 # handle user profile
 @app.route('/currency_exchange', methods=['POST'])
 def handle_currency_exchange():
-#     body = request.get_data(as_text=True)
-#     print(request.headers)
-#     print(request.form)
-#     print(body)
+    # body = request.get_data(as_text=True)
+    # print(request.headers)
+    # print(request.form)
+    # print(body)
     
     like = ""
     hobby = []
@@ -68,7 +68,7 @@ def handle_currency_exchange():
              "recommend":0}
     userID = ""
     data = request.form
-#     print(data)
+    print(data)
     for key, value in data.items():
         if(key.find('point') != -1):
             point[value] = 1
@@ -103,8 +103,7 @@ def handle_currency_exchange():
         setup_crawer(item,ID)
     # ID = 18
     build_personal_LDA(ID)
-    
-    return 'OK'
+    return 'Personal setting finished!'
 
 @app.route('/get_img', methods=['POST','GET'])
 def handle_get_img():
